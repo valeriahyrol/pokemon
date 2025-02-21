@@ -9,6 +9,7 @@ const axios = require('axios');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger/swagger.json');
+require('dotenv').config();
 
 /**
  * Додаємо middleware для вирішення CORS-проблем.
@@ -25,7 +26,7 @@ const PORT = process.env.PORT || 5001;
  * Базова адреса для звернень до PokeAPI.
  * @constant {string}
  */
-const POKEAPI_BASE_URL = 'https://pokeapi.co/api/v2';
+const POKEAPI_BASE_URL = process.env.POKEAPI_BASE_URL || 'https://pokeapi.co/api/v2';
 
 /**
  * Отримує список покемонів із підтримкою пагінації.
