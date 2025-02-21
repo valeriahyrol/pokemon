@@ -1,0 +1,140 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Pokemon API",
+    "version": "1.0.0",
+    "description": "Мінімальна документація для API викликів. Цей API дозволяє отримати список покемонів із підтримкою пагінації та отримати детальну інформацію про конкретного покемона."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5001",
+      "description": "Локальний сервер"
+    }
+  ],
+  "paths": {
+    "/api/pokemon": {
+      "get": {
+        "summary": "Отримання списку покемонів",
+        "description": "Повертає список покемонів із підтримкою пагінації. Параметри 'page' і 'limit' є необов'язковими. Щоб довго не чекати введіть меншу кількість покемонів, типу 4.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Номер сторінки",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Кількість покемонів на сторінку",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 12
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список покемонів",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Pokemon"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Помилка серверу"
+          }
+        }
+      }
+    },
+    "/api/pokemon/{id}": {
+      "get": {
+        "summary": "Отримання деталей покемона",
+        "description": "Повертає детальну інформацію про конкретного покемона за його id або ім'ям.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Ідентифікатор або ім'я покемона",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Детальна інформація про покемона",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pokemon"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Помилка серверу"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Pokemon": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "sprites": {
+            "type": "object",
+            "properties": {
+              "front_default": { "type": "string" }
+            }
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "object",
+                  "properties": {
+                    "name": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "height": { "type": "number" },
+          "weight": { "type": "number" },
+          "abilities": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ability": {
+                  "type": "object",
+                  "properties": {
+                    "name": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

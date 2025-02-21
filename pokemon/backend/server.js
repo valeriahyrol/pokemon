@@ -1,6 +1,5 @@
 /**
  * Створюємо екземпляр додатку Express.
- * Зауваження: використовується простий об'єкт, але його можна трактувати як Express додаток.
  *
  * @type {Object}
  */
@@ -8,8 +7,8 @@ const express = require('express');
 const app = express();
 const axios = require('axios');
 const cors = require('cors');
-
-
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger/swagger.json');
 
 /**
  * Додаємо middleware для вирішення CORS-проблем.
@@ -50,7 +49,6 @@ app.get('/api/pokemon', async (req, res) => {
         const response = await axios.get(`${POKEAPI_BASE_URL}/pokemon?limit=${limit}&offset=${offset}`);
         const results = response.data.results;
 
-        // Отримуємо детальну інформацію про кожного покемона
         const pokemonDetails = await Promise.all(
             results.map(async (poke) => {
                 try {
@@ -63,7 +61,6 @@ app.get('/api/pokemon', async (req, res) => {
             })
         );
 
-        // Фільтруємо невдалі запити
         res.json(pokemonDetails.filter(item => item !== null));
     } catch (error) {
         console.error('Error fetching Pokémon list:', error.message);
@@ -101,6 +98,7 @@ app.get('/api/pokemon/:id', async (req, res) => {
  * // Запуск сервера
  * node server.js
  */
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
