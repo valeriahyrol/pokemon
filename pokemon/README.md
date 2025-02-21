@@ -23,7 +23,7 @@
 
 1. **Клонування репозиторію:**
    ```bash
-   git clone https://github.com/valeriahyrol/pokemons.git
+   git clone https://github.com/valeriahyrol/pokemon.git
 
 2. **Перехід у директорію проєкту:**
    cd pokemon
